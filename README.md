@@ -19,7 +19,7 @@ npm run preview
 ```
 
 ## Test rapido su GitHub Pages
-Il repository è configurato per deploy automatico tramite GitHub Actions (`.github/workflows/deploy-pages.yml`).
+Il repository è configurato per deploy automatico tramite GitHub Actions (`.github/workflows/deploy-pages.yml`) e usa `npm install` nel workflow (non richiede lockfile).
 
 1. Pubblica il branch su GitHub e assicurati che il branch predefinito sia `main`.
 2. Vai in **Settings → Pages** e imposta **Source: GitHub Actions**.
