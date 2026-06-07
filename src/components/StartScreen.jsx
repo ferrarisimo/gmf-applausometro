@@ -15,7 +15,7 @@ export default function StartScreen({
         <div>
           <p className="eyebrow">Gazza Music Festival</p>
           <h1>GMF Applausometro</h1>
-          <p className="subtitle">Misura live l’Audience Energy Score con il nuovo look ufficiale giallo e nero.</p>
+          <p className="subtitle">Misura live l’Audience Energy Score</p>
         </div>
       </div>
 
