@@ -6,7 +6,16 @@ const FIELD_HELP = {
   thresholdMultiplier: 'Moltiplicatore del rumore di fondo per distinguere applauso e brusio.',
 };
 
-export default function AdminPanel({ settings, noiseFloor, onChangeSettings, onChangeNoiseFloor, onClose }) {
+export default function AdminPanel({
+  settings,
+  noiseFloor,
+  onChangeSettings,
+  onChangeNoiseFloor,
+  onTestMic,
+  onCalibrate,
+  disabledActions,
+  onClose,
+}) {
   const updateSetting = (key, value) => {
     onChangeSettings({ ...settings, [key]: Number(value) });
   };
@@ -26,9 +35,17 @@ export default function AdminPanel({ settings, noiseFloor, onChangeSettings, onC
       </div>
 
       <p className="admin-intro">
-        Adatta lo strumento alla dimensione del pubblico prima della gara: salva un preset rapido o
-        rifinisci manualmente soglia, sensibilità e livello massimo atteso.
+        Adatta lo strumento alla dimensione del pubblico prima della gara: salva un preset rapido,
+        rifinisci manualmente soglia, sensibilità e livello massimo atteso, oppure prepara microfono
+        e ambiente senza mostrare questi controlli al pubblico.
       </p>
+
+      <div className="admin-tools">
+        <button onClick={onTestMic}>Test microfono</button>
+        <button onClick={onCalibrate} disabled={disabledActions}>
+          Calibra ambiente
+        </button>
+      </div>
 
       <div className="preset-grid">
         {AUDIENCE_PRESETS.map((preset) => (

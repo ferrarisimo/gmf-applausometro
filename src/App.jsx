@@ -67,7 +67,15 @@ export default function App() {
 
   const handleTestMic = async () => {
     const ok = await requestPermission();
+    if (ok) {
+      setShowAdmin(false);
+    }
     setShowMicSelector(ok);
+  };
+
+  const handleCalibrate = async () => {
+    setShowAdmin(false);
+    await meter.calibrate();
   };
 
   const handleSaveResult = () => {
@@ -117,15 +125,11 @@ export default function App() {
         <StartScreen
           artist={artist}
           setArtist={setArtist}
-          onTestMic={handleTestMic}
-          onCalibrate={meter.calibrate}
           onStart={meter.startMeasurement}
           onOpenLeaderboard={() => setShowLeaderboard(true)}
           onOpenAdmin={() => setShowAdmin(true)}
           onToggleFullscreen={onToggleFullscreen}
           disabled={disabledActions || !hasMediaSupport}
-          noiseFloor={noiseFloor}
-          calibrationSettings={calibrationSettings}
           statusMessage={topMessage}
         />
       )}
@@ -174,6 +178,9 @@ export default function App() {
           noiseFloor={noiseFloor}
           onChangeSettings={handleCalibrationSettingsChange}
           onChangeNoiseFloor={handleNoiseFloorChange}
+          onTestMic={handleTestMic}
+          onCalibrate={handleCalibrate}
+          disabledActions={disabledActions || !hasMediaSupport}
           onClose={() => setShowAdmin(false)}
         />
       )}

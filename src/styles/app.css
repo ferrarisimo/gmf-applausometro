@@ -146,6 +146,11 @@ button.danger { background: #8a2130; border-color: rgba(255, 156, 176, 0.3); }
 button.ghost { padding: 0.45rem 0.8rem; }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
 
+:fullscreen .start-screen .projection-actions button:not(.primary),
+:-webkit-full-screen .start-screen .projection-actions button:not(.primary) { display: none; }
+:fullscreen .start-screen .projection-actions .primary,
+:-webkit-full-screen .start-screen .projection-actions .primary { flex: 1 1 100%; font-size: 1.15rem; }
+
 .status, .hint { margin-top: 0.35rem; color: #fff1a6; }
 
 .tuning-strip {
@@ -200,6 +205,8 @@ th { color: var(--gmf-yellow-soft); }
 .error { color: #ff9cb0; }
 
 .admin-intro { color: #fff0a1; margin-bottom: 1rem; line-height: 1.5; }
+.admin-tools { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 0 0 1.4rem; }
+.admin-tools button { flex: 1 1 220px; }
 .preset-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem; margin: 1rem 0 1.4rem; }
 .preset-card { text-align: left; display: grid; gap: 0.35rem; min-height: 130px; align-content: start; }
 .preset-card span { color: var(--gmf-muted); font-weight: 600; line-height: 1.35; }
