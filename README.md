@@ -1,6 +1,6 @@
 # GMF Applausometro
 
-Web app locale per il Gazza Music Festival: misura l'energia del pubblico da microfono e produce l'**Indice Applausometro GMF** (0-100).
+Web app locale per il Gazza Music Festival: misura l'energia del pubblico da microfono e produce l'**Indice Applausometro GMF** (1-10, massimo 2 decimali).
 
 ## Requisiti
 - Node.js 18+
