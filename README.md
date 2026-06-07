@@ -1,6 +1,6 @@
 # GMF Applausometro
 
-Web app locale per il Gazza Music Festival: misura l'energia del pubblico da microfono e produce l'**Indice Applausometro GMF** (0-100).
+Web app locale per il Gazza Music Festival: misura l'energia del pubblico da microfono e produce l'**Indice Applausometro GMF** (1-10, massimo 2 decimali).
 
 ## Requisiti
 - Node.js 18+
@@ -29,6 +29,7 @@ Il repository è configurato per deploy automatico tramite GitHub Actions (`.git
 ### Note GitHub Pages
 - `vite.config.js` imposta automaticamente `base` a `/<nome-repo>/` quando gira in CI Pages.
 - In locale il `base` resta `/`, quindi l'esperienza di sviluppo non cambia.
+- Gli asset statici referenziati dalla root pubblica, ad esempio `gmf-logo.svg`, vanno posizionati in `public/` e richiamati tramite la `BASE_URL` di Vite per funzionare anche sotto il percorso del repository GitHub Pages.
 
 ## Flusso operativo rapido
 1. Apri la schermata iniziale e inserisci il nome artista/band.

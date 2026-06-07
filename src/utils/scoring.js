@@ -6,6 +6,11 @@ const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const toScore = (value) => Math.round(clamp(value * 100, 0, 100));
 
 /**
+ * Converte uno score percentuale nell'Indice Applausometro GMF 1-10.
+ */
+const toApplauseIndex = (score) => Number(clamp(score / 10, 1, 10).toFixed(2));
+
+/**
  * Calcola lo score finale dell'Indice Applausometro GMF.
  * Nota: non sono decibel reali, ma valori relativi alla calibrazione locale.
  */
@@ -16,7 +21,7 @@ export function calculateApplauseScore({
 }) {
   if (!normalizedFrames.length) {
     return {
-      score: 0,
+      score: 1,
       avgIntensity: 0,
       peakIntensity: 0,
       usefulDuration: 0,
@@ -50,7 +55,7 @@ export function calculateApplauseScore({
     stabilityScore * 0.1;
 
   return {
-    score: clamp(Math.round(weightedScore), 0, 100),
+    score: toApplauseIndex(weightedScore),
     avgIntensity: avgIntensityScore,
     peakIntensity: peakIntensityScore,
     usefulDuration: Number(usefulDuration.toFixed(2)),

@@ -5,7 +5,7 @@ export default function ResultScreen({ artist, result, onSave, onBack }) {
     <section className="card result-screen">
       <h2>Risultato finale</h2>
       <p className="artist-name">{artist}</p>
-      <p className="score-burst">Indice Applausometro GMF: {result.score}</p>
+      <p className="score-burst">Voto Applausometro: {result.score}</p>
 
       <div className="result-grid">
         <Metric label="Intensità media" value={result.avgIntensity} />

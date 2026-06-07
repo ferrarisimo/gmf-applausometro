@@ -166,7 +166,7 @@ export function useApplauseMeter({
     });
 
     setResult(scoring);
-    setStatusMessage(`Misurazione completata. Indice Applausometro GMF: ${scoring.score}`);
+    setStatusMessage(`Misurazione completata. Voto Applausometro: ${scoring.score}`);
     return true;
   }, [
     calibrationSettings.maxRms,

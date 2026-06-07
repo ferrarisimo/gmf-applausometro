@@ -192,7 +192,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .score-burst { font-size: clamp(2rem, 8vw, 4.3rem); color: var(--gmf-yellow); margin: 0.8rem 0 1.2rem; animation: pop 1s ease; }
 @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.artist-name { font-size: clamp(1.4rem, 4vw, 2.2rem); }
+.artist-name { color: #fff; font-size: clamp(3.2rem, 7vw, 5.2rem); font-weight: 900; line-height: 1.05; margin-top: 0.25rem; }
 .result-grid { display: grid; grid-template-columns: repeat(2, minmax(180px, 1fr)); gap: 0.8rem; }
 .metric span { color: var(--gmf-muted); }
 .metric strong { display: block; font-size: 1.7rem; margin-top: 0.25rem; color: #fff7c7; }
