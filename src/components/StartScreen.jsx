@@ -1,3 +1,5 @@
+const logoSrc = `${import.meta.env.BASE_URL}gmf-logo.svg`;
+
 export default function StartScreen({
   artist,
   setArtist,
@@ -11,11 +13,11 @@ export default function StartScreen({
   return (
     <section className="card start-screen">
       <div className="brand-hero">
-        <img src="/gmf-logo.svg" alt="Logo Gazza Music Festival GMF" className="brand-logo" />
+        <img src={logoSrc} alt="Logo Gazza Music Festival GMF" className="brand-logo" />
         <div>
           <p className="eyebrow">Gazza Music Festival</p>
           <h1>GMF Applausometro</h1>
-          <p className="subtitle">Misura live l’Audience Energy Score con il nuovo look ufficiale giallo e nero.</p>
+          <p className="subtitle">Misura live l’Audience Energy Score</p>
         </div>
       </div>
 
