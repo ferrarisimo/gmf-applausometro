@@ -1,15 +1,11 @@
 export default function StartScreen({
   artist,
   setArtist,
-  onTestMic,
-  onCalibrate,
   onStart,
   onOpenLeaderboard,
   onOpenAdmin,
   onToggleFullscreen,
   disabled,
-  noiseFloor,
-  calibrationSettings,
   statusMessage,
 }) {
   return (
@@ -33,18 +29,9 @@ export default function StartScreen({
         />
       </label>
 
-      <div className="tuning-strip">
-        <span>Noise floor: {noiseFloor ? noiseFloor.toFixed(4) : 'non calibrato'}</span>
-        <span>Sensibilità: {calibrationSettings.sensitivity.toFixed(2)}x</span>
-        <span>RMS max: {calibrationSettings.maxRms.toFixed(3)}</span>
-      </div>
       <p className="status">{statusMessage}</p>
 
-      <div className="actions-grid">
-        <button onClick={onTestMic}>Test microfono</button>
-        <button onClick={onCalibrate} disabled={disabled}>
-          Calibra ambiente
-        </button>
+      <div className="actions-grid projection-actions">
         <button className="primary" onClick={onStart} disabled={disabled || !artist.trim()}>
           Avvia misurazione
         </button>
