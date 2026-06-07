@@ -5,7 +5,13 @@ const CALIBRATION_SECONDS = 5;
 const SESSION_SECONDS = 10;
 const COUNTDOWN_SECONDS = 3;
 
-export function useApplauseMeter({ startAnalyser, stopAnalyser, noiseFloor, setNoiseFloor }) {
+export function useApplauseMeter({
+  startAnalyser,
+  stopAnalyser,
+  noiseFloor,
+  setNoiseFloor,
+  calibrationSettings,
+}) {
   const [phase, setPhase] = useState('idle');
   const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS);
   const [secondsLeft, setSecondsLeft] = useState(SESSION_SECONDS);
@@ -33,10 +39,11 @@ export function useApplauseMeter({ startAnalyser, stopAnalyser, noiseFloor, setN
   const normalize = useCallback(
     (rms) => {
       const floor = noiseFloor ?? 0.01;
-      const normalized = (rms - floor) / (0.25 - floor);
+      const maxRms = Math.max(calibrationSettings.maxRms, floor + 0.01);
+      const normalized = ((rms - floor) / (maxRms - floor)) * calibrationSettings.sensitivity;
       return clamp(normalized, 0, 1);
     },
-    [noiseFloor],
+    [calibrationSettings.maxRms, calibrationSettings.sensitivity, noiseFloor],
   );
 
   const calibrate = useCallback(async () => {
@@ -108,7 +115,11 @@ export function useApplauseMeter({ startAnalyser, stopAnalyser, noiseFloor, setN
     setSecondsLeft(SESSION_SECONDS);
     setStatusMessage('Audience Energy Score live…');
 
-    const threshold = clamp((noiseFloor || 0.01) * 2.3, 0.02, 0.25);
+    const threshold = clamp(
+      (noiseFloor || 0.01) * calibrationSettings.thresholdMultiplier,
+      0.01,
+      calibrationSettings.maxRms,
+    );
 
     const started = await startAnalyser((rms) => {
       const normalized = normalize(rms);
@@ -144,14 +155,28 @@ export function useApplauseMeter({ startAnalyser, stopAnalyser, noiseFloor, setN
 
     const scoring = calculateApplauseScore({
       normalizedFrames: frameBufferRef.current,
-      threshold: clamp((threshold - (noiseFloor || 0)) / (0.25 - (noiseFloor || 0.01)), 0.1, 0.9),
+      threshold: clamp(
+        ((threshold - (noiseFloor || 0)) /
+          (Math.max(calibrationSettings.maxRms, (noiseFloor || 0.01) + 0.01) - (noiseFloor || 0.01))) *
+          calibrationSettings.sensitivity,
+        0.1,
+        0.9,
+      ),
       sessionSeconds: SESSION_SECONDS,
     });
 
     setResult(scoring);
     setStatusMessage(`Misurazione completata. Indice Applausometro GMF: ${scoring.score}`);
     return true;
-  }, [cleanup, noiseFloor, normalize, startAnalyser]);
+  }, [
+    calibrationSettings.maxRms,
+    calibrationSettings.sensitivity,
+    calibrationSettings.thresholdMultiplier,
+    cleanup,
+    noiseFloor,
+    normalize,
+    startAnalyser,
+  ]);
 
   const reset = useCallback(() => {
     cleanup();

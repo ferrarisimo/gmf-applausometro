@@ -6,17 +6,26 @@ import ResultScreen from './components/ResultScreen';
 import Leaderboard from './components/Leaderboard';
 import MicrophoneSelector from './components/MicrophoneSelector';
 import CalibrationPanel from './components/CalibrationPanel';
+import AdminPanel from './components/AdminPanel';
 import { useAudioAnalyser } from './hooks/useAudioAnalyser';
 import { useApplauseMeter } from './hooks/useApplauseMeter';
 import { clearLeaderboard, getLeaderboard, removeEntry, saveEntry } from './utils/storage';
 import { exportLeaderboardToCsv } from './utils/csv';
+import {
+  loadCalibrationSettings,
+  loadNoiseFloor,
+  saveCalibrationSettings,
+  saveNoiseFloor,
+} from './utils/settings';
 
 export default function App() {
   const [artist, setArtist] = useState('');
-  const [noiseFloor, setNoiseFloor] = useState(0.01);
+  const [noiseFloor, setNoiseFloor] = useState(() => loadNoiseFloor());
   const [leaderboard, setLeaderboard] = useState([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showMicSelector, setShowMicSelector] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [calibrationSettings, setCalibrationSettings] = useState(() => loadCalibrationSettings());
 
   const {
     hasMediaSupport,
@@ -30,11 +39,16 @@ export default function App() {
     stop,
   } = useAudioAnalyser();
 
+  const handleNoiseFloorChange = (nextNoiseFloor) => {
+    setNoiseFloor(saveNoiseFloor(nextNoiseFloor));
+  };
+
   const meter = useApplauseMeter({
     startAnalyser: start,
     stopAnalyser: stop,
     noiseFloor,
-    setNoiseFloor,
+    setNoiseFloor: handleNoiseFloorChange,
+    calibrationSettings,
   });
 
   useEffect(() => {
@@ -76,6 +90,10 @@ export default function App() {
 
   const onDeleteEntry = (id) => setLeaderboard(removeEntry(id));
 
+  const handleCalibrationSettingsChange = (nextSettings) => {
+    setCalibrationSettings(saveCalibrationSettings(nextSettings));
+  };
+
   const onResetLeaderboard = () => {
     if (!window.confirm('Confermi il reset completo della classifica?')) return;
     clearLeaderboard();
@@ -95,7 +113,7 @@ export default function App() {
       <div className="glow glow-a" />
       <div className="glow glow-b" />
 
-      {meter.phase === 'idle' && !showLeaderboard && !showMicSelector && (
+      {meter.phase === 'idle' && !showLeaderboard && !showMicSelector && !showAdmin && (
         <StartScreen
           artist={artist}
           setArtist={setArtist}
@@ -103,9 +121,11 @@ export default function App() {
           onCalibrate={meter.calibrate}
           onStart={meter.startMeasurement}
           onOpenLeaderboard={() => setShowLeaderboard(true)}
+          onOpenAdmin={() => setShowAdmin(true)}
           onToggleFullscreen={onToggleFullscreen}
           disabled={disabledActions || !hasMediaSupport}
           noiseFloor={noiseFloor}
+          calibrationSettings={calibrationSettings}
           statusMessage={topMessage}
         />
       )}
@@ -145,6 +165,16 @@ export default function App() {
               meter.reset();
             }
           }}
+        />
+      )}
+
+      {showAdmin && (
+        <AdminPanel
+          settings={calibrationSettings}
+          noiseFloor={noiseFloor}
+          onChangeSettings={handleCalibrationSettingsChange}
+          onChangeNoiseFloor={handleNoiseFloorChange}
+          onClose={() => setShowAdmin(false)}
         />
       )}
 
